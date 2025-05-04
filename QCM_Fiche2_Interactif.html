@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>QCM interactif – Fiche 2</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .question { margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    .correction { display: none; margin-top: 10px; padding: 10px; background: #eef; border-left: 4px solid #88f; }
+    .score { font-weight: bold; color: #004488; }
+    .correct-label { color: green; font-weight: bold; }
+    .incorrect-label { color: red; font-weight: bold; }
+    .correct-label::before { content: "✔ "; }
+    .incorrect-label::before { content: "✘ "; }
+    button { margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>QCM interactif – Fiche 2 : Étiologies des surdités</h1>
+  <form id="quizForm"></form>
+  <p id="finalScore" class="score"></p>
+
+  <script>
+    const questions = [
+      {
+        question: "1. Quelles sont les principales causes génétiques de surdité de perception chez l’adulte ?",
+        options: ["GJB2", "Connexine 43", "SLC26A4", "COCH", "MYO6"],
+        correct: [0, 2, 3],
+        correction: "✅ GJB2, SLC26A4, COCH sont impliqués. Connexine 43 et MYO6 ne le sont pas typiquement."
+      },
+      {
+        question: "2. Le syndrome de Pendred associe :",
+        options: ["Surdité de transmission", "Goitre thyroïdien", "Malformation de l’aqueduc vestibulaire", "Diabète de type 1", "Atrophie optique"],
+        correct: [1, 2],
+        correction: "✅ Goitre thyroïdien et malformation vestibulaire. Les autres éléments sont incorrects."
+      },
+      {
+        question: "3. Les signes typiques de presbyacousie sont :",
+        options: ["Surdité bilatérale symétrique", "Atteinte prédominante des graves", "Progression lente", "Association fréquente à des acouphènes", "Surdité fluctuante"],
+        correct: [0, 2, 3],
+        correction: "✅ Bilatérale, progressive, aiguës touchées. Fluctuante = non."
+      },
+      {
+        question: "4. Les médicaments suivants sont ototoxiques :",
+        options: ["Cisplatine", "Paracétamol", "Furosémide", "Amikacine", "Ibuprofène"],
+        correct: [0, 2, 3],
+        correction: "✅ Aminosides, diurétiques de l’anse et cisplatine sont ototoxiques."
+      },
+      {
+        question: "5. La neuropathie auditive peut se caractériser par :",
+        options: ["PEA altérés", "OEA présentes", "Bonne compréhension vocale", "Surdité fluctuante", "Audiométrie normale"],
+        correct: [0, 1, 4],
+        correction: "✅ PEA altérés, OEA conservées. Compréhension souvent mauvaise."
+      },
+      {
+        question: "6. Quelles infections peuvent entraîner une ossification cochléaire ?",
+        options: ["Méningite à pneumocoque", "Rougeole", "Oreillons", "Mononucléose", "Herpès labial"],
+        correct: [0, 1, 2],
+        correction: "✅ Méningite, rougeole, oreillons. Pas la mononucléose ou herpès labial."
+      },
+      {
+        question: "7. Une surdité unilatérale avec asymétrie vocale doit faire évoquer :",
+        options: ["Otospongiose", "Neurinome de l’acoustique", "Presbyacousie", "SEP", "Otite moyenne aiguë"],
+        correct: [1, 3],
+        correction: "✅ Neurinome ou SEP. Les autres sont bilatérales ou non évocatrices."
+      },
+      {
+        question: "8. Quelles maladies auto-immunes peuvent entraîner une surdité ?",
+        options: ["Lupus érythémateux disséminé", "Sarcoïdose", "Arthrose", "Wegener", "Goutte"],
+        correct: [0, 1, 3],
+        correction: "✅ Lupus, sarcoïdose, Wegener. Arthrose/goutte = non."
+      },
+      {
+        question: "9. Dans le bilan pré-implant, l’IRM permet :",
+        options: ["D’évaluer la perméabilité de la cochlée", "De visualiser le nerf cochléaire", "De rechercher un neurinome", "De diagnostiquer une otospongiose", "De mesurer le seuil auditif"],
+        correct: [1, 2],
+        correction: "✅ IRM = nerf et masse intracrânienne. Scanner pour l’os."
+      },
+      {
+        question: "10. Le scanner des rochers est utile pour :",
+        options: ["Visualiser les structures osseuses", "Confirmer une otospongiose", "Détecter une ossification post-méningite", "Diagnostiquer une SEP", "Évaluer la compréhension vocale"],
+        correct: [0, 1, 2],
+        correction: "✅ Scanner pour structure osseuse. SEP = IRM."
+      },
+      {
+        question: "11. En audiométrie vocale, un échec prothétique est défini par :",
+        options: ["Intelligibilité < 70 %", "Intelligibilité < 50 %", "Absence de seuil tonal", "Absence de réponse à 2 kHz", "Seuil à 20 dB HL"],
+        correct: [1],
+        correction: "✅ < 50 % d’intelligibilité en champ libre appareillé = critère HAS."
+      },
+      {
+        question: "12. Les critères HAS pour l’implantation cochléaire incluent :",
+        options: ["Surdité bilatérale sévère à profonde", "Motivation du patient", "Performance vocale > 80 %", "Âge > 85 ans", "Échec au test de Rinne"],
+        correct: [0, 1],
+        correction: "✅ Surdité bilatérale et motivation = indispensables."
+      },
+      {
+        question: "13. Le bilan orthophonique pré-implant inclut :",
+        options: ["Test MMBA", "Lecture labiale seule", "Audiométrie osseuse", "Test dans le bruit", "Otoscopie"],
+        correct: [0, 1, 3],
+        correction: "✅ Tests spécifiques à la compréhension, pas osseuse ou otoscopie."
+      },
+      {
+        question: "14. L’évaluation psychologique pré-implant vise à :",
+        options: ["Dépister les troubles anxiodépressifs", "Évaluer la motivation", "Diagnostiquer une pathologie psychiatrique", "Mesurer l’intensité de la perte", "Calculer le QI verbal"],
+        correct: [0, 1],
+        correction: "✅ Elle vise l’adhésion au projet, pas le diagnostic psychiatrique."
+      },
+      {
+        question: "15. Quels tests objectifs permettent d’évaluer la voie auditive ?",
+        options: ["PEA", "OEA", "Audiométrie libre champ", "Potentiels corticaux", "Tympanométrie"],
+        correct: [0, 1, 3],
+        correction: "✅ OEA, PEA, et potentiels corticaux sont objectifs. Les autres non."
+      },
+      {
+        question: "16. Une IRM dans le cadre d’une surdité est indiquée si :",
+        options: ["Surdité unilatérale", "Suspicion de neurinome", "Surdité congénitale bilatérale", "Vertiges associés", "Acouphènes isolés"],
+        correct: [0, 1, 3],
+        correction: "✅ IRM pour asymétrie ou pathologie rétrocochléaire suspectée."
+      },
+      {
+        question: "17. En cas de neuropathie auditive, on observe :",
+        options: ["OEA présentes", "PEA absents", "Bonne intelligibilité", "Réponse aux aminosides", "Tympanogramme plat"],
+        correct: [0, 1],
+        correction: "✅ OEA présentes, PEA absents. Intelligibilité souvent faible."
+      },
+      {
+        question: "18. Une surdité brutale chez un adulte doit faire évoquer :",
+        options: ["Maladie de Ménière", "Traumatisme sonore", "Méningite", "Connexine 26", "Otite séreuse"],
+        correct: [0, 1, 2],
+        correction: "✅ Urgences ORL typiques. Connexine = génétique, pas brutale."
+      },
+      {
+        question: "19. Les surdités centrales peuvent être causées par :",
+        options: ["SEP", "AVC", "Alzheimer", "Otospongiose", "Hypoacousie conductive"],
+        correct: [0, 1, 2],
+        correction: "✅ SEP, AVC, Alzheimer sont des causes centrales."
+      },
+      {
+        question: "20. En cas de surdité d’origine inconnue :",
+        options: ["Un suivi régulier est recommandé", "Le bilan doit être pluridisciplinaire", "L’implant cochléaire est contre-indiqué", "Une cause est retrouvée dans 90 % des cas", "Une surveillance uniquement ORL suffit"],
+        correct: [0, 1],
+        correction: "✅ Suivi et bilan large recommandés. Pas uniquement ORL."
+      }
+    ];
+
+    const form = document.getElementById('quizForm');
+    questions.forEach((q, index) => {
+      const div = document.createElement('div');
+      div.className = 'question';
+      div.innerHTML = `<p><strong>${q.question}</strong></p>`;
+      q.options.forEach((opt, i) => {
+        const id = `q${index}_opt${i}`;
+        div.innerHTML += `<label id="label_${id}"><input type="checkbox" name="q${index}" value="${i}" id="${id}"> ${opt}</label><br>`;
+      });
+      div.innerHTML += `<button type="button" onclick="validate(${index})">Valider</button>
+                        <div class="correction" id="correction${index}"></div>`;
+      form.appendChild(div);
+    });
+
+    let scores = Array(questions.length).fill(0);
+    function validate(index) {
+      const checkboxes = document.querySelectorAll(`input[name='q${index}']`);
+      const userAnswers = [];
+      checkboxes.forEach(cb => {
+        const label = document.getElementById(`label_${cb.id}`);
+        label.classList.remove("correct-label", "incorrect-label");
+        if (cb.checked) userAnswers.push(parseInt(cb.value));
+      });
+
+      const correct = questions[index].correct.sort();
+      const selected = [...userAnswers].sort();
+
+      const missed = correct.filter(v => !selected.includes(v)).length;
+      const incorrect = selected.filter(v => !correct.includes(v)).length;
+      const totalErrors = missed + incorrect;
+
+      let score = 0;
+      if (totalErrors === 0) {
+        score = 1;
+      } else if (totalErrors === 1) {
+        score = 0.5;
+      } else {
+        score = 0;
+      }
+
+      scores[index] = score;
+
+      checkboxes.forEach(cb => {
+        const label = document.getElementById(`label_${cb.id}`);
+        const val = parseInt(cb.value);
+        if (correct.includes(val)) {
+          label.classList.add("correct-label");
+        } else if (cb.checked) {
+          label.classList.add("incorrect-label");
+        }
+      });
+
+      const corrDiv = document.getElementById(`correction${index}`);
+      corrDiv.style.display = 'block';
+      corrDiv.innerHTML = `<p class="score">Score: ${score}/1</p><p>${questions[index].correction}</p>`;
+    }
+
+    const showScoreBtn = document.createElement('button');
+    showScoreBtn.textContent = 'Afficher le score total';
+    showScoreBtn.type = 'button';
+    showScoreBtn.onclick = function () {
+      const total = scores.reduce((a, b) => a + b, 0);
+      document.getElementById('finalScore').textContent = `Score total : ${total.toFixed(1)} / ${questions.length}`;
+    };
+    form.appendChild(showScoreBtn);
+
+  </script>
+</body>
+</html>
